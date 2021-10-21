@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:slideshow/widgets/slideshow.dart';
-import 'package:file_picker/file_picker.dart';
 
 class SlideShowPage extends StatelessWidget {
   final List<String> images;

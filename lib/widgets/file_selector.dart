@@ -3,15 +3,45 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:desktop_drop/desktop_drop.dart';
 
-class FileSelector extends StatelessWidget {
+class FileSelector extends StatefulWidget {
   final Function(List<String> list) returnImages;
 
   const FileSelector(this.returnImages, {Key? key}) : super(key: key);
 
+  @override
+  State<FileSelector> createState() => _FileSelectorState();
+}
+
+class _FileSelectorState extends State<FileSelector> {
+  final List<Uri> _list = [];
+  bool _dragging = false;
+
+  void _extractLinks(List<Uri> urls) async {
+    var images = <String>[];
+
+    for (var url in urls) {
+      if (_isDirectory(url.toFilePath())) {
+        var content = await _dirContent(Directory(url.toFilePath()));
+        images.addAll(content);
+      } else {
+        images.add(url.toFilePath());
+      }
+    }
+
+    widget.returnImages(images);
+  }
+
+  bool _isDirectory(String path) {
+    var filename = path.split('\\').last;
+    return filename.split('.').length <= 1;
+  }
+
   bool _isImage(String path) {
     var images = ['jpg', 'jpeg', 'png'];
-    var ext = path.split('.').last;
+    var name = path.split('\\').last;
+    var ext = name.split('.').last;
 
     for (String image in images) {
       if (ext == image) {
@@ -40,10 +70,11 @@ class FileSelector extends StatelessWidget {
     String? path = await FilePicker.platform
         .getDirectoryPath(dialogTitle: 'Select a picture folder');
 
-    var dir = Directory(path!);
-    var content = await _dirContent(dir);
-
-    returnImages(content);
+    if (path != null) {
+      var dir = Directory(path);
+      var content = await _dirContent(dir);
+      widget.returnImages(content);
+    }
   }
 
   @override
@@ -55,6 +86,29 @@ class FileSelector extends StatelessWidget {
           onPressed: () async {
             _selectFiles();
           },
+        ),
+        DropTarget(
+          onDragDone: (detail) {
+            _extractLinks(detail.urls);
+          },
+          onDragEntered: (detail) {
+            setState(() {
+              _dragging = true;
+            });
+          },
+          onDragExited: (detail) {
+            setState(() {
+              _dragging = false;
+            });
+          },
+          child: Container(
+            height: 200,
+            width: 200,
+            color: _dragging ? Colors.blue.withOpacity(0.4) : Colors.black26,
+            child: _list.isEmpty
+                ? const Center(child: Text("Drop here"))
+                : Text(_list.join("\n")),
+          ),
         ),
       ],
     );
