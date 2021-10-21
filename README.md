@@ -20,3 +20,10 @@ It is only designed for a desktop environment and has only been tested on Window
 - Left and right arrow keys: go forward and backward in slideshow
 - Space: pause
 - ESC: go back to the main menu
+
+## Future Plans
+- Adding in settings for the slideshow that the user can tweak in the menu
+  - shuffle
+  - time per image
+  - repeat when at end
+- A redesign of the main menu to be more aesthetically pleasing
