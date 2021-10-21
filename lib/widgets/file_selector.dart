@@ -119,9 +119,7 @@ class _FileSelectorState extends State<FileSelector> {
             height: 200,
             width: 200,
             color: _dragging ? Colors.blue.withOpacity(0.4) : Colors.black26,
-            child: _list.isEmpty
-                ? const Center(child: Text("Drop here"))
-                : Text(_list.join("\n")),
+            child: const Center(child: Text("Drop here")),
           ),
         ),
       ],
