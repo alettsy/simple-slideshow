@@ -92,6 +92,8 @@ class _SlideShowState extends State<SlideShow> {
           setState(() {
             paused = !paused;
           });
+        } else if (e.isKeyPressed(LogicalKeyboardKey.escape)) {
+          Navigator.pop(context);
         }
       },
       child: Stack(

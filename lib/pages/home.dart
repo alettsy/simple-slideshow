@@ -18,6 +18,12 @@ class _HomeState extends State<Home> {
     });
   }
 
+  void _resetFiles() {
+    setState(() {
+      _files.clear();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,7 +34,7 @@ class _HomeState extends State<Home> {
         margin: const EdgeInsets.all(15),
         child: Column(
           children: <Widget>[
-            FileSelector(_getFiles),
+            FileSelector(_getFiles, _resetFiles),
             const SizedBox(height: 50),
             Text(
               'Total files: ${_files.length}',
@@ -40,15 +46,17 @@ class _HomeState extends State<Home> {
             ),
             const SizedBox(height: 100),
             ElevatedButton(
-              child: const Text('Next'),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => SlideShowPage(_files),
-                  ),
-                );
-              },
+              child: const Text('Start SlideShow'),
+              onPressed: _files.isNotEmpty
+                  ? () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => SlideShowPage(_files),
+                        ),
+                      );
+                    }
+                  : null,
             ),
             const SizedBox(height: 25),
           ],

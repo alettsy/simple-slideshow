@@ -6,9 +6,11 @@ import 'package:file_picker/file_picker.dart';
 import 'package:desktop_drop/desktop_drop.dart';
 
 class FileSelector extends StatefulWidget {
+  final VoidCallback resetFiles;
   final Function(List<String> list) returnImages;
 
-  const FileSelector(this.returnImages, {Key? key}) : super(key: key);
+  const FileSelector(this.returnImages, this.resetFiles, {Key? key})
+      : super(key: key);
 
   @override
   State<FileSelector> createState() => _FileSelectorState();
@@ -81,12 +83,24 @@ class _FileSelectorState extends State<FileSelector> {
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        ElevatedButton(
-          child: const Text('Select files'),
-          onPressed: () async {
-            _selectFiles();
-          },
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            ElevatedButton(
+              child: const Text('Select files'),
+              onPressed: () async {
+                _selectFiles();
+              },
+            ),
+            const SizedBox(width: 10),
+            ElevatedButton(
+                child: const Text('Clear files'),
+                onPressed: () {
+                  widget.resetFiles();
+                }),
+          ],
         ),
+        const SizedBox(height: 25),
         DropTarget(
           onDragDone: (detail) {
             _extractLinks(detail.urls);
