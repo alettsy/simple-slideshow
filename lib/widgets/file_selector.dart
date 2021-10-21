@@ -17,7 +17,6 @@ class FileSelector extends StatefulWidget {
 }
 
 class _FileSelectorState extends State<FileSelector> {
-  final List<Uri> _list = [];
   bool _dragging = false;
 
   void _extractLinks(List<Uri> urls) async {
@@ -42,8 +41,7 @@ class _FileSelectorState extends State<FileSelector> {
 
   bool _isImage(String path) {
     var images = ['jpg', 'jpeg', 'png'];
-    var name = path.split('\\').last;
-    var ext = name.split('.').last;
+    var ext = path.split('.').last;
 
     for (String image in images) {
       if (ext == image) {

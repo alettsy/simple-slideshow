@@ -32,7 +32,6 @@ class _SlideShowState extends State<SlideShow> {
     _timer = Timer.periodic(widget.timePerImage, (Timer timer) {
       if (widget.images.length == _index - 1) {
         _reset();
-        //timer.cancel();
       } else {
         setState(() {
           _index += 1;
