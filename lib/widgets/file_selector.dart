@@ -23,7 +23,7 @@ class _FileSelectorState extends State<FileSelector> {
     var images = <String>[];
 
     for (var url in urls) {
-      if (_isDirectory(url.toFilePath())) {
+      if (await Directory(url.toFilePath()).exists()) {
         var content = await _dirContent(Directory(url.toFilePath()));
         images.addAll(content);
       } else {
@@ -32,11 +32,6 @@ class _FileSelectorState extends State<FileSelector> {
     }
 
     widget.returnImages(images);
-  }
-
-  bool _isDirectory(String path) {
-    var filename = path.split('\\').last;
-    return filename.split('.').length <= 1;
   }
 
   bool _isImage(String path) {
