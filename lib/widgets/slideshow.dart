@@ -20,6 +20,7 @@ class _SlideShowState extends State<SlideShow> {
   int _index = 0;
   var paused = false;
   late Timer _timer;
+  String _folderName = "";
 
   @override
   void initState() {
@@ -30,7 +31,7 @@ class _SlideShowState extends State<SlideShow> {
 
   void _startTimer() {
     _timer = Timer.periodic(widget.timePerImage, (Timer timer) {
-      if (widget.images.length == _index - 1) {
+      if (widget.images.length - 1 == _index) {
         _reset();
       } else {
         setState(() {
@@ -62,6 +63,11 @@ class _SlideShowState extends State<SlideShow> {
     setState(() {
       _index = widget.images.length - 1;
     });
+  }
+
+  String _getFolderName() {
+    var splitted = widget.images[_index].split('\\');
+    return splitted[splitted.length - 2];
   }
 
   @override
@@ -97,9 +103,16 @@ class _SlideShowState extends State<SlideShow> {
       },
       child: Stack(
         children: <Widget>[
+          Image.file(
+            File(widget.images[_index]),
+            fit: BoxFit.fitHeight,
+            height: double.infinity,
+            width: double.infinity,
+            alignment: Alignment.center,
+          ),
           if (paused)
             const Positioned(
-              bottom: 5,
+              bottom: 20,
               left: 5,
               child: Text(
                 'PAUSED',
@@ -110,12 +123,29 @@ class _SlideShowState extends State<SlideShow> {
                 ),
               ),
             ),
-          Image.file(
-            File(widget.images[_index]),
-            fit: BoxFit.fitHeight,
-            height: double.infinity,
-            width: double.infinity,
-            alignment: Alignment.center,
+          Positioned(
+            bottom: 5,
+            left: 5,
+            child: Text(
+              '${_index + 1}/${widget.images.length}',
+              style: const TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
+            ),
+          ),
+          Positioned(
+            left: 5,
+            top: 5,
+            child: Text(
+              _getFolderName(),
+              style: const TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
+            ),
           ),
         ],
       ),
