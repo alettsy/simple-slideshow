@@ -10,6 +10,10 @@ It is only designed for a desktop environment and has only been tested on Window
 
 - Time per image is 5 seconds
 - Images are randomly shuffled when you start the slideshow
+
+## Screenshots
+
+<img src="assets/slideshow.png" alt="Slideshow" style="max-width:500px" />
   
 ## How To Use
 
